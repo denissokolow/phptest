@@ -152,7 +152,7 @@ include 'func.php';
             </div>
             <div class="form-group">
               <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="article">
-                <option selected>Статья расходов</option>
+                <option selected value="">Статья расходов</option>
                 <?php
                 foreach ($result_sta as $res) { ?>
                   <option><?php echo $res->statya; ?></option>

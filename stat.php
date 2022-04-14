@@ -1,5 +1,7 @@
 <?php
-include 'funcstat.php';
+
+include 'func.php';
+
 ?>
 
 <!doctype html>
@@ -36,9 +38,9 @@ include 'funcstat.php';
                     </thead>
                     <tbody>
                         <?php
-                        foreach ($result as $res) { ?>
+                        foreach ($res_pat as $res) { ?>
                             <tr>
-                                <td><small><?php echo $res->num; ?></small></td>
+                                <td><small><?php echo $res->id; ?></small></td>
                                 <td><small><?php echo $res->part; ?></small></td>
                                 <td><small><?php echo $res->var_one; ?></small></td>
                                 <td><small><?php echo $res->adress; ?></small></td>
@@ -48,173 +50,137 @@ include 'funcstat.php';
                                 <td><small><?php echo $res->in_curr; ?></small></td>
                                 <td><small><?php echo $res->artic; ?></small></td>
                                 <td>
-                                    <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete<?php echo $res->number; ?>"><small><i class="fa fa-trash"></i></small></a>
-
+                                    <a href="" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#use_filter<?php echo $res->id; ?>"><small>Применить</small></a>
+                                    <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete<?php echo $res->id; ?>"><small><i class="fa fa-trash"></i></small></a>
                             </tr>
-                            <!-- Modal delete-->
-                            <div class="modal fade" id="delete<?php echo $res->number; ?>" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                            <!-- Modal delete filter-->
+                            <div class="modal fade" id="delete<?php echo $res->id; ?>" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Удалить расходный ордер №<?php echo $res->number; ?>?</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Удалить расходный ордер №<?php echo $res->id; ?>?</h5>
                                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="?number=<?php echo $res->number; ?>" method="post">
+                                            <form action="?id=<?php echo $res->id; ?>" method="post">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                                <button type="submit" class="btn btn-danger" name="delete">Удалить</button>
+                                                <button type="submit" class="btn btn-danger" name="delete_st">Удалить</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- Modal delete filter-->
+
+                            <!-- Modal use filter-->
+                            <div class="modal fade" id="use_filter<?php echo $res->id; ?>" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Применить фильтр №<?php echo $res->id; ?>?</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="?id=<?php echo $res->id; ?>" method="post">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                                <button type="submit" class="btn btn-success" name="use_filter">Применить</button>
                                             </form>
                                         </div>
                                     </div>
                                 <?php } ?>
-                    </tbody>
+                                </div>
+                            </div>
+                            <!-- Modal use filter-->
+                        </tbody>
                 </table>
-                <table class="table table-success table-striped">
-                    <thead>
-                        <tr>
-                            <td>...</td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Контрагент</option>
-                                    <?php
-                                    foreach ($respay as $res) { ?>
-                                        <option value="1"><?php echo $res->partner; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Условие 1</option>
-                                    <option value="1">И</option>
-                                    <option value="2">ИЛИ</option>
-                                    <option value="3">И НЕ</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Адрес</option>
-                                    <?php
-                                    foreach ($respay as $res) { ?>
-                                        <option value="1"><?php echo $res->project; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Условие 2</option>
-                                    <option value="1">И СОДЕРЖИТ</option>
-                                    <option value="2">И НЕ СОДЕРЖИТ</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="form-control form-control-sm" type="text" placeholder="Назначение платежа">
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Условие 3</option>
-                                    <option value="1">И СОДЕРЖИТ</option>
-                                    <option value="2">И НЕ СОДЕРЖИТ</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Приход валюта</option>
-                                    <?php
-                                    foreach ($respay as $res) { ?>
-                                        <option value="1"><?php echo $res->in_currency; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                    <option selected>Статья расходов</option>
-                                    <option value="1">Аренда</option>
-                                    <option value="2">Оплата за товар</option>
-                                    <option value="3">Оплата услуг</option>
-                                    <?php
-                                    foreach ($respay as $res) { ?>
-                                        <option value="4"><?php echo $res->article; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td>...</td>
-                        </tr>
-                    </thead>
-                </table>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#create"><small>Сохранить фильтр</small></button>
-                <button type="button" class="btn btn-secondary"><small>Применить фильтр</small></button>
+                <form action="" method="post">
+                    <table class="table table-success table-striped">
+                        <thead>
+                            <tr>
+                                <td>...</td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="contragent">
+                                        <option selected>Контрагент</option>
+                                        <?php
+                                        foreach ($result_cont as $res) { ?>
+                                            <option><?php echo $res->contragent; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="var_one">
+                                        <option selected>Условие 1</option>
+                                        <option value="AND">И</option>
+                                        <option value="OR">ИЛИ</option>
+                                        <option value="NOT">И НЕ</option>
+                                    </select>
+                                </td>
+                                <td>
+                                <td>
+                                    <input class="form-control form-control-sm" type="text" placeholder="Адрес" name="adress">
+                                </td>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="var_two">
+                                        <option selected>Условие 2</option>
+                                        <option value="IN">И СОДЕРЖИТ</option>
+                                        <option value="NOT IN">И НЕ СОДЕРЖИТ</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="naznachenie">
+                                        <option selected>Назначение платежа</option>
+                                        <?php
+                                        foreach ($result_naz as $res) { ?>
+                                            <option><?php echo $res->naznachenie; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="var_three">
+                                        <option selected>Условие 3</option>
+                                        <option value="IN">И СОДЕРЖИТ</option>
+                                        <option value="NOT IN">И НЕ СОДЕРЖИТ</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="valuta">
+                                        <option selected>Приход валюта</option>
+                                        <?php
+                                        foreach ($result_val as $res) { ?>
+                                            <option><?php echo $res->valuta; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="statya">
+                                        <option selected>Статья расходов</option>
+                                        <?php
+                                        foreach ($result_sta as $res) { ?>
+                                            <option><?php echo $res->statya; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>...</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <button type="submit" class="btn btn-secondary" name="create_st"><small>Сохранить фильтр</small></button>
+                    <button type="submit" class="btn btn-secondary" name="upd_pay"><small>Применить фильтр</small></button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location='http://phptestwork/'"><small>Назад</small></button>
+                </form>
             </div>
-        </div>
-    </div>
-    <!-- Modal add-->
-    <div class="modal fade" id="create" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Добавить расходный ордер</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <small>Тип документа</small>
-                            <input type="text" class="form-control" name="type">
-                        </div>
-                        <div class="form-group">
-                            <small>№</small>
-                            <input type="text" class="form-control" name="number">
-                        </div>
-                        <div class="form-group">
-                            <small>Время</small>
-                            <input type="text" class="form-control" name="time">
-                        </div>
-                        <div class="form-group">
-                            <small>Организация</small>
-                            <input type="text" class="form-control" name="organization">
-                        </div>
-                        <div class="form-group">
-                            <small>Контрагент</small>
-                            <input type="text" class="form-control" name="partner">
-                        </div>
-                        <div class="form-group">
-                            <small>Приход валюта</small>
-                            <input type="text" class="form-control" name="in_currency">
-                        </div>
-                        <div class="form-group">
-                            <small>Расход валюта</small>
-                            <input type="text" class="form-control" name="out_currency">
-                        </div>
-                        <div class="form-group">
-                            <small>Назначение платежа</small>
-                            <input type="text" class="form-control" name="appointment">
-                        </div>
-                        <div class="form-group">
-                            <small>Статья расходов</small>
-                            <input type="text" class="form-control" name="article">
-                        </div>
-                        <div class="form-group">
-                            <small>Адрес</small>
-                            <input type="text" class="form-control" name="project">
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary" name="add">Сохранить</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal add-->
 
-    <!-- Optional JavaScript; choose one of the two! -->
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
+
+            <!-- Optional JavaScript; choose one of the two! -->
+            <!-- Option 1: Bootstrap Bundle with Popper -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+            <!-- Option 2: Separate Popper and Bootstrap JS -->
+            <!--
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     -->
 </body>
-
 </html>
